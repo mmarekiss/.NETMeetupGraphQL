@@ -46,20 +46,23 @@ namespace GraphQL_EF_Core
             }, ServiceLifetime.Transient);
 
             services.AddAutoMapper(typeof(Startup).Assembly);
+
             services.AddMediatR(typeof(Startup).Assembly);
 
             services.AddGraphQL(SchemaBuilder.New()
                 .AddQueryType(descriptor =>
                 {
-                    descriptor.Name("Queries");
-                   //SAMPLE register queries there by AddField
+                    descriptor.AddField<CityQuery>("City");
+                    descriptor.AddField<PersonQuery>("People");
                 })
                 .AddMutationType(descriptor =>
                 {
                     descriptor.Name("Mutations");
-                    //SAMPLE register Mutations there by AddField
+                    
+                    descriptor.AddField<PersonMutation>("PersonMutation");
+                    descriptor.AddField<CityMutation>("CityMutation");
                 })
-                //SAMPLE Add list of people in city by extension
+                .AddType<CityTypeExtension>()
                 );
         }
 

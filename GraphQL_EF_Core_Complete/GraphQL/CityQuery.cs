@@ -20,6 +20,13 @@ namespace GraphQL_EF_Core.GraphQL
             this.mediator = mediator;
         }
 
-       //SAMPLE create method to load cities
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        [UseSelection]
+        public async Task<IQueryable<City>> GetCities()
+        {
+            return await mediator.Send(new CitiesRequest());
+        }
     }
 }

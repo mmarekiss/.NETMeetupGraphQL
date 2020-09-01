@@ -11,15 +11,22 @@ using System.Threading.Tasks;
 
 namespace GraphQL_EF_Core.GraphQL
 {
-    public class CityQuery
+    public class PersonQuery
     {
         private readonly IMediator mediator;
 
-        public CityQuery(IMediator mediator)
+        public PersonQuery(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
-       //SAMPLE create method to load cities
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        [UseSelection]
+        public async Task<IQueryable<Person>> GetPersons()
+        {
+            return await mediator.Send(new PeopleRequest());
+        }
     }
 }

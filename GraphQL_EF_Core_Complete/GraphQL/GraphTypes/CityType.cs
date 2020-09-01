@@ -20,7 +20,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GraphQL_EF_Core.GraphQL.GraphTypes
+namespace GraphQL_EF_Core.GraphQL.GraphTypesExtensions
 {
     public class CityTypeExtension : ObjectTypeExtension<City>
     {

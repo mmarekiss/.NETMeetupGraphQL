@@ -23,7 +23,6 @@ namespace GraphQL_EF_Core.Mediatr.Queries
             this.mapper = mapper;
         }
 
-        
         public Task<IQueryable<DTO.Person>> Handle(PeopleRequest request, CancellationToken cancellationToken)
         {
             IQueryable<DAL.Person> source = dbContext.People.Where(x => !request.City.HasValue || request.City.Value == x.CityId);

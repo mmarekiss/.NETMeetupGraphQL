@@ -16,14 +16,18 @@ namespace GraphQL_EF_Core.Mediatr.Queries
 {
     public class CitiesQuery : IRequestHandler<CitiesRequest, IQueryable<DTO.City>>
     {
-        public CitiesQuery() //SAMPLE inject DB and mapper
+        private readonly QLContext dbContext;
+        private readonly IMapper mapper;
+
+        public CitiesQuery(QLContext dbContext, IMapper mapper)
         {
+            this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public Task<IQueryable<DTO.City>> Handle(CitiesRequest request, CancellationToken cancellationToken)
         {
-            //SAMPLE load Cities from DB. Be aware of Task an IQueryable.
-            return Task.FromResult( Enumerable.Empty<DTO.City>().AsQueryable());
+            return Task.FromResult(dbContext.Cities.ProjectTo<DTO.City>(mapper.ConfigurationProvider));
         }
     }
 }

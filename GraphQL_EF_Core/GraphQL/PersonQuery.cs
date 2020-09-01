@@ -20,13 +20,6 @@ namespace GraphQL_EF_Core.GraphQL
             this.mediator = mediator;
         }
 
-        [UsePaging]
-        [UseFiltering]
-        [UseSorting]
-        [UseSelection]
-        public async Task<IQueryable<Person>> GetPersons()
-        {
-            return await mediator.Send(new PeopleRequest());
-        }
+        //SAMPLE create method to load persons
     }
 }
