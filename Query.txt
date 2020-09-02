@@ -1,0 +1,78 @@
+////Authorize headers
+//{
+//  "Authentication": "I'm authenticated"
+//}
+
+
+query Q {
+  CityQuery {
+    cities(
+      first: 3
+      order_by: { name: ASC }
+      where: { OR: [{ name_ends_with: "Mìsto" }] }
+    ) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        name
+        id
+        residents(where: { AND: [{ isBigId: true }] }, order_by: { id: DESC }) {
+          nodes {
+            isBigId
+            name
+            id
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation MP {
+  PersonMutation {
+    add(person: { cityId: 100, name: "Nový èlovìk" }) {
+      city {
+        name
+      }
+      id
+      name
+    }
+  }
+}
+
+mutation MC {
+  CityMutation {
+    add(city: { name: "Nové Mìsto" }) {
+      id
+      name
+      residents {
+        nodes {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+
+mutation MCP {
+  CityMutation {
+    addWithPeople(
+      city: {
+        name: "Mìsto lidí"
+        persons: [{ name: "èlovìk ve mìstì" }, { name: "èlovìk z vesnice" }]
+      }
+    ) {
+      id
+      name
+      residents {
+        nodes {
+          id
+          name
+        }
+      }
+    }
+  }
+}

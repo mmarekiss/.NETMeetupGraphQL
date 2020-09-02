@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using GraphQL_EF_Core.DAL;
-using GraphQL_EF_Core.GraphQL;
 using GraphQL_EF_Core.GraphQL.GraphTypesExtensions;
 using GraphQL_EF_Core.GraphQL.Mutations;
+using GraphQL_EF_Core.GraphQL.Queries;
 using GraphQL_EF_Core.Helpers;
 using HotChocolate;
 using HotChocolate.AspNetCore;
@@ -49,18 +49,27 @@ namespace GraphQL_EF_Core
             services.AddMediatR(typeof(Startup).Assembly);
 
             services.AddGraphQL(SchemaBuilder.New()
+                .AddAuthorizeDirectiveType()
                 .AddQueryType(descriptor =>
                 {
                     descriptor.Name("Queries");
-                   //SAMPLE register queries there by AddField
+                    descriptor.AddField<PersonQuery>();
+                    descriptor.AddField<CityQuery>();
                 })
                 .AddMutationType(descriptor =>
                 {
                     descriptor.Name("Mutations");
-                    //SAMPLE register Mutations there by AddField
+                    descriptor.AddField<PersonMutation>();
+                    descriptor.AddField<CityMutation>();
                 })
-                //SAMPLE Add list of people in city by extension
+                .AddType<CityTypeExtension>() //Add list of people in city
                 );
+
+
+            services.AddAuthorization();
+            services.AddAuthentication("GraphQL")
+                .AddScheme<Authentication.DummyAuthOptions, Authentication.DummyAuth>("GraphQL", opt => { });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +80,8 @@ namespace GraphQL_EF_Core
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
+            app.UseAuthentication();
             app.UseGraphQL();
 
             app.UseRouting();

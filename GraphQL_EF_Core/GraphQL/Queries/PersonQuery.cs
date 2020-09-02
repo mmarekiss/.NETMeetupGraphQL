@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphQL_EF_Core.GraphQL
+namespace GraphQL_EF_Core.GraphQL.Queries
 {
     public class PersonQuery
     {
@@ -20,6 +20,13 @@ namespace GraphQL_EF_Core.GraphQL
             this.mediator = mediator;
         }
 
-        //SAMPLE create method to load persons
+        [UsePaging] //Add generic paging
+        [UseFiltering] //Add generic filering
+        [UseSorting] //Add generic sorting
+        [UseSelection]
+        public async Task<IQueryable<Person>> GetPersons()
+        {
+            return await mediator.Send(new PeopleRequest());
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GraphQL_EF_Core.Mediatr.Requests;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using MediatR;
 using System.Threading.Tasks;

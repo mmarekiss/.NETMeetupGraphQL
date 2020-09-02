@@ -9,6 +9,7 @@ using HotChocolate.Types.Filters;
 using HotChocolate.Types.Relay;
 using HotChocolate.Utilities;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,17 @@ using System.Threading.Tasks;
 
 namespace GraphQL_EF_Core.GraphQL.GraphTypesExtensions
 {
-    public class CityTypeExtension 
+    public class CityTypeExtension : ObjectTypeExtension<DTO.City>
     {
-        //SAMPLE //Create city type extension here
+        protected override void Configure(IObjectTypeDescriptor<City> descriptor)
+        {
+            base.Configure(descriptor);
+            descriptor.Field<CityPeopleResolver>(x=>x.GetPeople(default, default))
+                .Name("residents")
+                .UsePaging<ObjectType<Person>>()
+                .UseFiltering()
+                .UseSorting();
+
+        }
     }
 }

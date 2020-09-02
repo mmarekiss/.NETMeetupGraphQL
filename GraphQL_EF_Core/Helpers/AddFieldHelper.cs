@@ -10,7 +10,7 @@ namespace GraphQL_EF_Core.Helpers
 {
     public static class AddFieldHelper
     {
-        public static void AddField<T>(this IObjectTypeDescriptor descriptor, string? name)
+        public static void AddField<T>(this IObjectTypeDescriptor descriptor, string? name = null)
         {
             var type = typeof(T);
             descriptor.Field(name ?? type.Name).Type(type).Resolver(

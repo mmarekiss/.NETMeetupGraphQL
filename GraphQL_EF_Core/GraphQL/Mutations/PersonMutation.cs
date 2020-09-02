@@ -1,5 +1,6 @@
 ﻿using GraphQL_EF_Core.Mediatr.Requests;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace GraphQL_EF_Core.GraphQL.Mutations
 {
     public class PersonMutation
     {
+        [Authorize]
         public Task<DTO.Person> Add([Service] IMediator mediator, AddPersonRequest person)
             => mediator.Send(person);
     }
