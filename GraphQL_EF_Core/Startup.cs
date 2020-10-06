@@ -7,6 +7,7 @@ using GraphQL_EF_Core.DAL;
 using GraphQL_EF_Core.GraphQL.GraphTypesExtensions;
 using GraphQL_EF_Core.GraphQL.Mutations;
 using GraphQL_EF_Core.GraphQL.Queries;
+using GraphQL_EF_Core.GraphQL.Resolver;
 using GraphQL_EF_Core.Helpers;
 using HotChocolate;
 using HotChocolate.AspNetCore;
@@ -48,6 +49,9 @@ namespace GraphQL_EF_Core
             services.AddAutoMapper(typeof(Startup).Assembly);
             services.AddMediatR(typeof(Startup).Assembly);
 
+            services.AddDataLoaderRegistry();
+            services.AddDataLoader<CitySurnamesDataLoader>();
+
             services.AddGraphQL(SchemaBuilder.New()
                 .AddAuthorizeDirectiveType()
                 .AddQueryType(descriptor =>
@@ -80,11 +84,12 @@ namespace GraphQL_EF_Core
                 app.UseDeveloperExceptionPage();
             }
 
+
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthentication();
             app.UseGraphQL();
-
-            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {

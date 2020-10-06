@@ -1,6 +1,7 @@
 ﻿using GraphQL_EF_Core.DTO;
 using GraphQL_EF_Core.GraphQL.Resolver;
 using GraphQL_EF_Core.Mediatr.Requests;
+using GreenDonut;
 using HotChocolate;
 using HotChocolate.Language;
 using HotChocolate.Resolvers;
@@ -28,11 +29,22 @@ namespace GraphQL_EF_Core.GraphQL.GraphTypesExtensions
         protected override void Configure(IObjectTypeDescriptor<City> descriptor)
         {
             base.Configure(descriptor);
-            descriptor.Field<CityPeopleResolver>(x=>x.GetPeople(default, default))
+            descriptor.Field<CityPeopleResolver>(x => x.GetPeople(default, default))
                 .Name("residents")
                 .UsePaging<ObjectType<Person>>()
                 .UseFiltering()
                 .UseSorting();
+
+            descriptor.Field("cityNames")
+                .Type<NonNullType<ListType<NonNullType<StringType>>>>()
+                .Resolver(ctx =>
+                {
+                    IDataLoader<int, String[]> dataLoader = ctx.DataLoader<CitySurnamesDataLoader>();
+
+                    return dataLoader.LoadAsync(ctx.Parent<DTO.City>().Id.Value, CancellationToken.None);
+                });
+                //There is not allowed to use an filter or pagination, because of string.
+                //When you need it, need to create an object for return
 
         }
     }
