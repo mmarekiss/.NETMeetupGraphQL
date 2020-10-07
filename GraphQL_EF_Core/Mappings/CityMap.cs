@@ -12,7 +12,8 @@ namespace GraphQL_EF_Core.Mappings
     {
         public CityMap()
         {
-            CreateMap<DAL.City, DTO.City>();
+            CreateMap<DAL.City, DTO.City>()
+                .ForMember(x => x.PersonsInOneQuery, x => x.MapFrom(s => s.Persons));
             CreateMap<AddCityRequest, DAL.City>();
 
             CreateMap<AddCityWithPeopleRequest, DAL.City>();

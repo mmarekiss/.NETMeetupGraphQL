@@ -18,6 +18,10 @@ query Q {
       nodes {
         name
         id
+        personsInOneQuery{
+          id
+          name
+        }
         residents(where: { AND: [{ isBigId: true }] }, order_by: { id: DESC }) {
           nodes {
             isBigId

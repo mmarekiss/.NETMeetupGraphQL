@@ -21,7 +21,7 @@ namespace GraphQL_EF_Core.DTO
 
         public String Name { get; set; } = "";
 
-       
+        public IEnumerable<Person> PersonsInOneQuery { get; set; } = Enumerable.Empty<Person>();
 
     }
 }
